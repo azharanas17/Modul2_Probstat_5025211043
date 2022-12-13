@@ -110,13 +110,27 @@ ggplot2::ggplot(mydata, aes(x = Group, y = Length)) + geom_boxplot(fill = "grey"
 #------------------------------------------------
 #nomer 5
 #eksperimen dilakukan untuk mengetahui pengaruh suhu operasi (100˚C, 125˚C dan 150˚C) dan tiga jenis kaca pelat muka (A, B dan C) pada keluaran cahaya tabung osiloskop.
+mydata = read.csv("GTL.csv")
 
 #a. Buatlah plot sederhana untuk visualisasi data 
+pl = ggplot2::ggplot(data=mydata, aes(x=Temp, y=Light, shape=factor(Glass))) + geom_point()
+pl + facet_grid(. ~ Glass)
 
 #b. Lakukan uji ANOVA dua arah untuk 2 faktor
+mydata$Glass = as.factor(mydata$Glass)
+mydata$Temp_Factor = as.factor(mydata$Temp)
+anova = aov(Light ~ Glass*Temp_Factor, data=mydata)
+summary(anova)
 
 #c.Tampilkan tabel dengan mean dan standar deviasi keluaran cahaya untuk setiap perlakuan (kombinasi kaca pelat muka dan suhu operasi) 
+mydata_summary = group_by(mydata, Glass, Temp) %>%
+  summarise(mean=mean(Light), sd=sd(Light)) %>%
+  arrange(desc(mean))
+print(mydata_summary)
 
 #d. Lakukan uji Tukey
+tukey = TukeyHSD(anova)
+print(tukey)
 
 #e. Gunakan compact letter display untuk menunjukkan perbedaan signifikan antara uji Anova dan uji Tukey
+print(multcompLetters4(anova, tukey))

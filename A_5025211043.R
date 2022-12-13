@@ -96,7 +96,7 @@ model1 = lm(Length ~ Group, data = mydata)
 anova(model1)
 
 #d. Berapakah nilai-p? Apa yang dapat disimpulkan dari H0?
-paste("")
+paste("Nilai p yang didaptkan dari bartlett.test yaitu 0.8054")
 
 #e. Verifikasilah jawaban model 1 dengan Post-hooc test TukeyHSD ,  dari nilai p yang didapatkan apakah satu jenis kucing lebih panjang dari yang lain? Jelaskan.
 anov = aov(model1)
